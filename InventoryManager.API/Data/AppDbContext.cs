@@ -1,12 +1,9 @@
 ﻿using InventoryManager.API.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace InventoryManager.API.Data
-{
-    public class AppDbContext : DbContext
-    {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+namespace InventoryManager.API.Data;
 
-        public DbSet<Product> Products { get; set; }
-    }
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+{
+    public DbSet<Product> Products => Set<Product>();
 }
