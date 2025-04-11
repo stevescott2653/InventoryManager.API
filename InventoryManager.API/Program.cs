@@ -1,17 +1,44 @@
+using InventoryManager.API.Data;
+using InventoryManager.API.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Swagger;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "InventoryManager API", Version = "v1" });
+});
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseInMemoryDatabase("InventoryDb"));
 
 var app = builder.Build();
+
+// Seed the database.
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+    if (!db.Products.Any())
+    {
+        db.Products.AddRange(
+            new Product { Name = "Laptop", Price = 999.99M, Quantity = 10 },
+            new Product { Name = "Phone", Price = 499.50M, Quantity = 25 },
+            new Product { Name = "Keyboard", Price = 79.99M, Quantity = 50 }
+        );
+        db.SaveChanges();
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
