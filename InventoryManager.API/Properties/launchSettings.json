@@ -19,5 +19,9 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
+  },
+  "SwaggerUrls": {
+    "SwaggerUI": "https://localhost:5001/swagger/",
+    "SwaggerJson": "https://localhost:5001/swagger/v1/swagger.json"
   }
 }
