@@ -2,6 +2,8 @@ using InventoryManager.API.Data;
 using InventoryManager.API.Models;
 using InventoryManager.API.Repositories;
 using InventoryManager.API.Repositories.Interfaces;
+using InventoryManager.API.Services;
+using InventoryManager.API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
@@ -16,7 +18,7 @@ builder.Services.AddLogging(config =>
     config.AddDebug();
 });
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-
+builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
