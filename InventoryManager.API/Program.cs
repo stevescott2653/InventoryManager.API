@@ -25,7 +25,7 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "InventoryManager API", Version = "v1" });
 });
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseInMemoryDatabase("InventoryDb"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
