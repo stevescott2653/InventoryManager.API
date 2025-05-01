@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using InventoryManager.API.Data;
+﻿using Microsoft.AspNetCore.Mvc;
 using InventoryManager.API.Models;
-using Microsoft.EntityFrameworkCore;
-
+using InventoryManager.API.Services.Interfaces;
 
 namespace InventoryManager.API.Controllers
 {
@@ -11,33 +8,33 @@ namespace InventoryManager.API.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IProductService _productService;
 
-        public ProductsController(AppDbContext context)
+        public ProductsController(IProductService productService)
         {
-            _context = context;
+            _productService = productService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetAll()
         {
-            return await _context.Products.ToListAsync();
+            var products = await _productService.GetAllProductsAsync();
+            return Ok(products);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetById(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await _productService.GetByIdAsync(id);
             if (product == null) return NotFound();
-            return product;
+            return Ok(product);
         }
 
         [HttpPost]
         public async Task<ActionResult<Product>> Create(Product product)
         {
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
+            var createdProduct = await _productService.AddAsync(product);
+            return CreatedAtAction(nameof(GetById), new { id = createdProduct.Id }, createdProduct);
         }
 
         [HttpPut("{id}")]
@@ -45,8 +42,8 @@ namespace InventoryManager.API.Controllers
         {
             if (id != product.Id) return BadRequest();
 
-            _context.Entry(product).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            var updatedProduct = await _productService.UpdateAsync(product);
+            if (updatedProduct == null) return NotFound();
 
             return NoContent();
         }
@@ -54,11 +51,8 @@ namespace InventoryManager.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var product = await _context.Products.FindAsync(id);
-            if (product == null) return NotFound();
-
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
+            var deleted = await _productService.DeleteAsync(id);
+            if (!deleted) return NotFound();
 
             return NoContent();
         }
