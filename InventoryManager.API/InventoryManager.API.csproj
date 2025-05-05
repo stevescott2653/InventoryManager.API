@@ -41,8 +41,9 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+
+    <!-- Test SDK for running tests -->
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
   </ItemGroup>
 
 </Project>
-
-
