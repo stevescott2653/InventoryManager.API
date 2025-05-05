@@ -5,12 +5,25 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <PreserveCompilationContext>true</PreserveCompilationContext>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- Enable XML documentation for Swagger -->
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- FluentValidation for model validation -->
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+
+    <!-- ASP.NET Core Testing -->
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.4" />
+
+    <!-- OpenAPI/Swagger for API documentation -->
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="8.1.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="8.1.1" />
+
+    <!-- Entity Framework Core for database access -->
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.4" />
@@ -18,13 +31,18 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+
+    <!-- Moq for mocking in unit tests -->
     <PackageReference Include="Moq" Version="4.20.72" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="8.1.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="8.1.1" />
+
+    <!-- xUnit for unit testing -->
     <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
-
-
 </Project>
+
+

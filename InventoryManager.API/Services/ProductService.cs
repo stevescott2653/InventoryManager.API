@@ -51,7 +51,6 @@ namespace InventoryManager.API.Services
         public async Task<Product> AddAsync(Product product)
         {
             _logger.LogInformation("Adding a new product: {ProductName}.", product.Name);
-            ValidateProduct(product);
 
             var createdProduct = await _repository.AddAsync(product);
             _logger.LogInformation("Product {ProductName} added successfully with ID {ProductId}.", createdProduct.Name, createdProduct.Id);
@@ -68,8 +67,6 @@ namespace InventoryManager.API.Services
                 _logger.LogWarning("Invalid product ID: {ProductId}.", product.Id);
                 throw new ArgumentException("Product ID must be greater than zero.", nameof(product.Id));
             }
-
-            ValidateProduct(product);
 
             var updatedProduct = await _repository.UpdateAsync(product);
 
@@ -108,31 +105,5 @@ namespace InventoryManager.API.Services
 
             return deleted;
         }
-
-        private void ValidateProduct(Product product)
-        {
-            _logger.LogInformation("Validating product: {ProductName}.", product.Name);
-
-            if (string.IsNullOrWhiteSpace(product.Name))
-            {
-                _logger.LogWarning("Validation failed: Product name is empty.");
-                throw new ArgumentException("Product name cannot be empty.", nameof(product.Name));
-            }
-
-            if (product.Price <= 0)
-            {
-                _logger.LogWarning("Validation failed: Product price must be greater than zero.");
-                throw new ArgumentException("Product price must be greater than zero.", nameof(product.Price));
-            }
-
-            if (product.Quantity < 0)
-            {
-                _logger.LogWarning("Validation failed: Product quantity cannot be negative.");
-                throw new ArgumentException("Product quantity cannot be negative.", nameof(product.Quantity));
-            }
-
-            _logger.LogInformation("Product {ProductName} passed validation.", product.Name);
-        }
     }
 }
-
